@@ -16,4 +16,12 @@ export default {
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
   },
+  primary: '#161616',
+  secondary: '#FF6600',
+  lightGrey: '#FCF8FF',
+  grey: '#EEE9F0',
+  medium: '#9F9AA1',
+  mediumDark: '#424242',
+  green: '#437919',
+  white: "#ffffff"
 };

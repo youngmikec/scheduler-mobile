@@ -1,53 +1,62 @@
+import React, { useEffect } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { Pressable, useColorScheme } from 'react-native';
 
 import Colors from '../../constants/Colors';
+import ProfileHeader from '../../components/ProfileHeader';
+import { useFonts } from 'expo-font';
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const [loaded, error] = useFonts({
+    KumbhSansRegular: require('../../assets/fonts/KumbhSans-Regular.ttf'),
+    KumbhSansBold: require('../../assets/fonts/KumbhSans-Bold.ttf'),
+  });
+
+  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+  useEffect(() => {
+    if (error) throw error;
+  }, [error]);
 
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarLabelStyle: {
+          fontSize: 18,
+          fontFamily: 'KumbhSansRegular',
+          color: Colors.primary
+        }
       }}>
       <Tabs.Screen
-        name="index"
+        name="home-tab"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          title: 'Home',
+          headerTitleStyle: {
+            display: 'none'
+          },
+          tabBarShowLabel: false,
+          header: () => <ProfileHeader />,
+          tabBarIcon: () => <MaterialIcons name='home-filled' size={28} color={Colors.primary} />,
+        }}
+      />
+      <Tabs.Screen
+        name="Message-tab"
+        options={{
+          title: 'Message',
+          header: () => <ProfileHeader />,
+          tabBarIcon: () => <Ionicons name="chatbubble-ellipses-outline" size={28} color={Colors.primary} />,
         }}
       />
       <Tabs.Screen
         name="two"
         options={{
           title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: () => <Ionicons name="chatbubble-ellipses-outline" size={28} color={Colors.primary} />,
         }}
       />
     </Tabs>
